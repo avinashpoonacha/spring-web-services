@@ -4,6 +4,7 @@ import com.avinash.learning.springwebservices.DTO.Users;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -31,5 +32,18 @@ public class UserService {
            return user;
         }
         return new Users();
+    }
+
+    public Users deletebyId(String age)
+    {
+        Iterator<Users> userIterator = users.iterator();
+        while(userIterator.hasNext()) {
+            Users user = userIterator.next();
+            if (user.getAge().equals(age)){
+                userIterator.remove();
+                return user;
+            }
+        }
+        return null;
     }
 }
