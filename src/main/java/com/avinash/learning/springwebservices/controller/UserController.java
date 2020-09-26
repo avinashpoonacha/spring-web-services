@@ -5,6 +5,7 @@ import com.avinash.learning.springwebservices.bean.WelcomeBean;
 import com.avinash.learning.springwebservices.exception.UserNotFoundException;
 import com.avinash.learning.springwebservices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,6 +33,20 @@ public class UserController {
             throw new UserNotFoundException("{age}-"+age);
         }
         return user;
+    }
+
+    @DeleteMapping("/users/{age}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String age) {
+        Users user= userService.deletebyId(age);
+        if (user ==null ){
+            throw new UserNotFoundException("{age}-"+age);
+        }
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{age}")
+                .buildAndExpand(user.getAge()).toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @PostMapping("/users")
